@@ -68,6 +68,28 @@ class TodoList {
     this.itemAt(index).markUndone();
   }
 
+  markDoneTitle(title) {
+    let todo = this.findByTitle(title);
+    if (todo !== undefined) {
+      todo.markDone();
+    }
+  }
+
+  markUndoneTitle(title) {
+    let todo = this.findByTitle(title);
+    if (todo !== undefined) {
+      todo.markUndone();
+    }
+  }
+
+  markAllDone() {
+    this.forEach(todo => todo.markDone());
+  }
+
+  markAllUndone() {
+    this.forEach(todo => todo.markUndone());
+  }
+
   isDone() {
     return this.todos.every(todo => todo.isDone());
   }
@@ -87,7 +109,7 @@ class TodoList {
 
   toString() {
     let str = `---- ${this.title} ----\n`;
-    this.todos.forEach(todo => {
+    this.forEach(todo => {
       str += `${todo.toString()}\n`;
     });
     return str;
@@ -105,6 +127,22 @@ class TodoList {
       }
     });
     return filteredTodo;
+  }
+
+  findByTitle(title) {
+    return this.filter(todo => todo.getTitle() === title).pop();
+  }
+
+  allDone() {
+    return this.filter(todo => todo.isDone());
+  }
+
+  allNotDone() {
+    return this.filter(todo => !todo.isDone());
+  }
+
+  toArray() {
+    return this.todos.slice();
   }
 
   _validateIndex(index) {
@@ -127,7 +165,6 @@ list.add(todo3);
 list.add(todo4);
 list.add(todo5);
 list.add(todo6);
-list.markDoneAt(0);
-list.markDoneAt(4);
-let doneTodos = list.filter(todo => todo.isDone()).first();
-console.log(doneTodos);
+list.markAllDone();
+console.log(list.toString());
+console.log(list.findByTitle("Clean"));
